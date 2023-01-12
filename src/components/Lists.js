@@ -34,7 +34,8 @@ const Lists = (props) => {
                       <tr key={index}>
                         <td>{item.item}</td>
                         <td>
-                          Quantity: <input type="number" />
+                          Quantity:{" "}
+                          <input type="number" defaultValue={item.quantity} />
                         </td>
                         <td>
                           <button onClick={(e) => removeRowData(item, e)}>

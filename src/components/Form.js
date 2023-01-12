@@ -30,4 +30,4 @@ const Form = (props) => {
   );
 };
 
-export default React.memo(Form);
+export default Form;
