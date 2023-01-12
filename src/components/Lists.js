@@ -8,17 +8,6 @@ const Lists = (props) => {
 
   const submittedItemHandler = (item) => {
     inventoryCtx.addItem(item);
-
-    // fetch(`https://store-8437e-default-rtdb.firebaseio.com/`, {
-    //   method: "POST",
-    //   body: JSON.stringify(inventoryCtx.inventory),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // }).then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    // })
   };
   const removeRowData = (item, e) => {
     console.log(item);
