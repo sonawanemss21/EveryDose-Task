@@ -1,22 +1,17 @@
 import React from "react";
 import { useReducer } from "react";
-import { useState } from "react";
 
 export const inventoryContext = React.createContext({
   inventory: [],
   addItem: () => {},
+  updateInventory: () => {},
   removeItem: () => {},
   clearInventory: () => {},
-  setData: () => {}
+  setData: () => {},
 });
 
 let initialState = {
-  inventory: [
-    // { item: "book", quantity: 1 },
-    // { item: "pencil", quantity: 1 },
-    // { item: "bag", quantity: 1 },
-    // { item: "eraser", quantity: 1 },
-  ],
+  inventory: [],
 };
 const reducerFunction = (state, action) => {
   if (action.type === "Add") {
@@ -43,9 +38,13 @@ const reducerFunction = (state, action) => {
     };
   }
 
-  if (action.type === "Remove") {
-    console.log(action.item);
+  if (action.type === "Update") {
+    return {
+      inventory: action.items,
+    };
+  }
 
+  if (action.type === "Remove") {
     let existingItemIndex = state.inventory.findIndex((item) => {
       return item.item == action.item.item;
     });
@@ -59,11 +58,11 @@ const reducerFunction = (state, action) => {
     }
 
     return {
-      inventory: updatedInventory
-    }
+      inventory: updatedInventory,
+    };
   }
 
-  if(action.type = "Clear") {
+  if ((action.type = "Clear")) {
     return initialState;
   }
 };
@@ -74,6 +73,10 @@ const InventoryProvider = (props) => {
     initialState
   );
 
+  const updatedInventoryHandler = (items) => {
+    dispatchInventoryAction({ type: "Update", items: items });
+  };
+
   const addInventoryItemHandler = (item) => {
     dispatchInventoryAction({ type: "Add", item: item });
   };
@@ -83,12 +86,13 @@ const InventoryProvider = (props) => {
   const clearInventoryHandler = () => {
     dispatchInventoryAction({ type: "Clear" });
   };
- 
+
   const listContext = {
     inventory: inventoryState.inventory,
     addItem: addInventoryItemHandler,
+    updateInventory: updatedInventoryHandler,
     removeItem: removeInventoryItemHandler,
-    clearInventory: clearInventoryHandler
+    clearInventory: clearInventoryHandler,
   };
 
   return (

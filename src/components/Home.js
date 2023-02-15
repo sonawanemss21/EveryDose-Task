@@ -1,15 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Row } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import { inventoryContext } from "../store/inventory-context";
 
-const Home = (props) => {
+const Home = () => {
   const inventoryCtx = useContext(inventoryContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch(
+      `https://inventory-67c05-default-rtdb.firebaseio.com/inventory/data.json`
+    )
+      .then((Response) => Response.json())
+      .then((data) => {
+        let updatedInv = [];
+        for (let key in data) {
+          updatedInv.push({
+            item: data[key].item,
+            quantity: data[key].quantity,
+          });
+        }
+        inventoryCtx.updateInventory(updatedInv);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const editListHandler = () => {
     navigate("/lists");
-  }
+  };
 
   return (
     <div>
@@ -36,7 +54,7 @@ const Home = (props) => {
           </tbody>
         </Table>
       </div>
-      <Button onClick={editListHandler} >Edit List</Button>
+      <Button onClick={editListHandler}>Edit List</Button>
     </div>
   );
 };
